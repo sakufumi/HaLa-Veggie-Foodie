@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>HaLa Veggie Search</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+</head>
+<body>
+    <h1>盛岡ハラル・ベジタリアン検索</h1>
+
+    <form method="POST">
+        <label for="category">種類:</label>
+        <select name="category">
+            {% for cat in categories %}
+                <option value="{{ cat }}" {% if cat == selected_category %}selected{% endif %}>{{ cat }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="genre">ジャンル:</label>
+        <input type="text" name="genre" value="{{ selected_genre or '' }}" placeholder="例: Cafe, Indian curry">
+
+        <button type="submit">検索</button>
+    </form>
+
+    <hr>
+
+    {% if results %}
+        <h2>検索結果（{{ results|length }} 件）</h2>
+        {% for row in results %}
+            <div>
+                <h3>{{ row['Name'] }}</h3>
+                <p>📍 {{ row['Address'] }}</p>
+                <p>🍽️ {{ row['Genre'] }}</p>
+                <p>🕒 {{ row['Open hours'] }}</p>
+                <p>🚫 {{ row['Holiday'] }}</p>
+                <p><a href="{{ row['Map'] }}" target="_blank" rel="noopener noreferrer">地図を見る</a></p>
+            </div>
+            <hr>
+        {% endfor %}
+    {% elif request.method == 'POST' %}
+        <p>該当する店舗は見つかりませんでした。</p>
+    {% else %}
+        <p>条件を入力して検索してください。</p>
+    {% endif %}
+</body>
+</html>
