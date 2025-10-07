@@ -53,7 +53,7 @@ def index():
 
 
     selected_genres=selected_genre
-
+gi
 
 if __name__ == "__main__":
     # 本番では debug=False 推奨
