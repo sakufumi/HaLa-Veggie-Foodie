@@ -13,13 +13,13 @@ try:
 except FileNotFoundError:
     df = pd.DataFrame()
 
-# 列名・主要列の前処理
-df.columns = df.columns.str.strip()
+# 列名・主要列の前処理（列名が非文字列でも安全にトリム）
+df.columns = pd.Index([("" if pd.isna(c) else str(c).strip()) for c in df.columns])
+
 for col in ["Halal or Veg", "Genre"]:
     if col in df.columns:
         df[col] = df[col].astype(str).str.strip()
     else:
-        # 列が無い場合に備えて空列を作成
         df[col] = ""
 
 # カテゴリ選択肢（ユニーク値）
@@ -39,21 +39,26 @@ def index():
         selected_category = request.form.get("category") or "すべて"
         selected_genre = request.form.get("genre") or ""
 
-        # カテゴリは完全一致（用途的にこちらが安全）
+        # カテゴリは完全一致
         if selected_category and selected_category != "すべて":
             filtered = filtered[filtered["Halal or Veg"] == selected_category]
 
-        # ジャンルは部分一致（ユーザー入力を正規表現エスケープして安全に）
+        # ジャンルは部分一致（大文字小文字無視）
         if selected_genre:
             pattern = re.escape(selected_genre)
-            filtered = filtered[filtered["Genre"].str.contains(pattern, case=False, na=False, regex=True)]
+            filtered = filtered[
+                filtered["Genre"].astype(str).str.contains(pattern, case=False, na=False, regex=True)
+            ]
 
         results = filtered.to_dict(orient="records")
 
-
-
-    selected_genres=selected_genre
-gi
+    return render_template(
+        "index.html",
+        categories=categories,
+        selected_category=selected_category,
+        selected_genre=selected_genre,
+        results=results,
+    )
 
 if __name__ == "__main__":
     # 本番では debug=False 推奨
