@@ -1,7 +1,17 @@
-from flask import Flask, render_template, request
-import pandas as pd
-import os
-import re
+from flask import Flask, render_template
+from create_db import Restaurant  # ← ここだけ変更
+
+app = Flask(__name__)
+
+@app.route("/")
+def index():
+    restaurants = Restaurant.select()
+    return render_template("index.html", restaurants=restaurants)
+
+if __name__ == "__main__":
+    app.run(debug=True)
+
+
 
 app = Flask(__name__)
 
