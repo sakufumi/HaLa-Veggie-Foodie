@@ -19,3 +19,29 @@ class Restaurant(db.Model):
 # データベースを作成
 with app.app_context():
     db.create_all()
+
+with app.app_context():
+    restaurants = [
+        Restaurant(
+            name="Vegetarian Cafe LOONEY",
+            category="Cafe",
+            genre="Vegetarian ･ Vegan",
+            halal_or_veg="Vegetarian"
+        ),
+        Restaurant(
+            name="Karakoma",
+            category="Vegetarian restaurant",
+            genre="Vegetable",
+            halal_or_veg="Vegetarian"
+        ),
+        Restaurant(
+            name="Chef Indian Curry",
+            category="Indian cu",
+            genre="Curry",
+            halal_or_veg="Halal"
+        )
+    ]
+
+    db.session.add_all(restaurants)
+    db.session.commit()
+    print("複数のレストランを追加しました！")
