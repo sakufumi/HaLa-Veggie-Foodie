@@ -1,24 +1,71 @@
-
 <!doctype html>
 <html lang="ja">
-  <head>
-    <meta charset="utf-8" />
-    <title>Restaurants</title>
-  </head>
-  <body>
-    <h1>Restaurants</h1>
-    <ul>
-      {% for r in restaurants %}
-        <li>
-          <strong>{{ r.name }}</strong>
-          （{{ r.genre }} / {{ r.halal_or_veg }}）
-          <br />
-          {{ r.address }} |
-          <a href="{{ r.map_url }}" target="_blank" rel="noopener">Map</a>
-        </li>
-      {% else %}
-        <li>データがありません</li>
-      {% endfor %}
-    </ul>
-  </body>
+<head>
+    <meta charset="utf-8">
+    <title>Restaurant Finder</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .filter-form { background: #f5f5f5; padding: 20px; margin-bottom: 20px; border-radius: 5px; }
+        .filter-form label { display: block; margin: 10px 0; }
+        .filter-form input, .filter-form select { padding: 5px; margin-left: 10px; }
+        .filter-form button { background: #007cba; color: white; padding: 10px 20px; border: none; border-radius: 3px; cursor: pointer; }
+        .filter-form button:hover { background: #005a87; }
+        .results { margin-top: 20px; }
+        .restaurant-item { background: white; padding: 15px; margin: 10px 0; border-left: 4px solid #007cba; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .restaurant-name { font-size: 18px; font-weight: bold; color: #333; }
+        .restaurant-meta { color: #666; margin: 5px 0; }
+        .restaurant-address { margin: 5px 0; }
+        .map-link { color: #007cba; text-decoration: none; }
+        .map-link:hover { text-decoration: underline; }
+        .no-data { text-align: center; color: #666; font-style: italic; }
+    </style>
+</head>
+<body>
+    <h1>Restaurant Finder</h1>
+    
+    <!-- フィルターフォーム -->
+    <div class="filter-form">
+        <h3>検索・フィルター</h3>
+        <form method="POST">
+            <label>
+                カテゴリ:
+                <select name="category">
+                    {% for cat in categories %}
+                    <option value="{{ cat }}" {% if cat == selected_category %}selected{% endif %}>
+                        {{ cat }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </label>
+            
+            <label>
+                ジャンル:
+                <input type="text" name="genre" value="{{ selected_genre }}" placeholder="例: 和食、カフェ、イタリアン">
+            </label>
+            
+            <button type="submit">検索</button>
+        </form>
+    </div>
+    
+    <!-- 結果表示 -->
+    <div class="results">
+        <h2>検索結果 ({{ results|length }}件)</h2>
+        {% if results %}
+            {% for restaurant in results %}
+            <div class="restaurant-item">
+                <div class="restaurant-name">{{ restaurant.name }}</div>
+                <div class="restaurant-meta">{{ restaurant.genre }} / {{ restaurant.halal_or_veg }}</div>
+                {% if restaurant.address %}
+                <div class="restaurant-address">住所: {{ restaurant.address }}</div>
+                {% endif %}
+                {% if restaurant.map_url %}
+                <a href="{{ restaurant.map_url }}" target="_blank" class="map-link">地図を見る</a>
+                {% endif %}
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="no-data">該当するレストランが見つかりませんでした。</div>
+        {% endif %}
+    </div>
+</body>
 </html>

@@ -1,19 +1,21 @@
-from peewee import *
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
 
-# SQLiteファイル名を指定（このファイルが作られる！）
-db = SqliteDatabase('restaurants.db')
+app = Flask(__name__)
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///restaurants.db"
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-class Restaurant(Model):
-    name = CharField()
-    category = CharField()
-    genre = CharField()
-    halal_or_veg = CharField()
-    address = TextField()
-    map_url = TextField()
+db = SQLAlchemy(app)
 
-    class Meta:
-        database = db
 
-# DB接続＆テーブル作成（ここで .db ファイルが生成される！）
-db.connect()
-db.create_tables([Restaurant])
+class Restaurant(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100))
+    category = db.Column(db.String(100))
+    genre = db.Column(db.String(100))
+    halal_or_veg = db.Column(db.String(50))
+
+
+# データベースを作成
+with app.app_context():
+    db.create_all()
