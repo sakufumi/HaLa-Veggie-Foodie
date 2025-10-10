@@ -1,16 +1,35 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>レストラン一覧</title>
+  <meta charset="UTF-8">
+  <title>HaLa Veggie Foodie - Restaurant Search</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1>登録されたレストラン</h1>
-    <ul>
-        {% for r in restaurants %}
-            <li>{{ r.name }} - {{ r.category }} - {{ r.address }} - {{ r.phone }}</li>
-        {% endfor %}
-    </ul>
+  <header>
+    <img src="{{ url_for('static', filename='logo.png') }}" alt="HaLa Veggie Foodie Logo" style="height: 80px;">
+    <h1>HaLa Veggie Foodie - Morioka Restaurant Search</h1>
+  </header>
+
+  <form method="GET" action="/">
+    <label for="genre">Filter by Genre:</label>
+    <input type="text" name="genre" id="genre" placeholder="e.g. Curry">
+
+    <label for="type">Filter by Type:</label>
+    <select name="type" id="type">
+      <option value="">All</option>
+      <option value="Halal">Halal</option>
+      <option value="Vegetarian">Vegetarian</option>
+    </select>
+
+    <button type="submit">Search</button>
+  </form>
+
+  <ul>
+    {% for r in restaurants %}
+      <li>{{ r.name }} - {{ r.category }} - {{ r.genre }} - {{ r.halal_or_veg }}</li>
+    {% endfor %}
+  </ul>
 </body>
 </html>
-
