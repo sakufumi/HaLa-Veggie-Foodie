@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>HaLa Veggie Foodie Map</title>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      background-color: #f0f8ff;
+    }
+    h2 {
+      color: #2c3e50;
+    }
+    #map {
+      height: 600px;
+      width: 100%;
+      margin-top: 20px;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Select an Area in Iwate to Find Restaurants</h2>
+  <div id="map"></div>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    const map = L.map('map').setView([39.7036, 141.1527], 8); // Morioka center
+
+    // 🌐 English-style map tiles (CartoDB Positron)
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/">CARTO</a>',
+      subdomains: 'abcd',
+      maxZoom: 19
+    }).addTo(map);
+
+    // 📍 English-labeled area markers
+    const areas = [
+      { name: "Morioka", coords: [39.7036, 141.1527] },
+      { name: "Hiraizumi", coords: [38.9833, 141.1167] },
+      { name: "Tono", coords: [39.3333, 141.5333] },
+      { name: "Hachimantai", coords: [40.0000, 140.9500] }
+    ];
+
+    areas.forEach(area => {
+      L.marker(area.coords).addTo(map)
+        .bindPopup(`<b>${area.name}</b><br><a href="/?area=${area.name}">View restaurants in ${area.name}</a>`);
+    });
+  </script>
+</body>
+</html>
+

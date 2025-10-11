@@ -1,35 +1,78 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>HaLa Veggie Foodie - Restaurant Search</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap" rel="stylesheet">
-</head>
-<body>
-  <header>
-    <img src="{{ url_for('static', filename='logo.png') }}" alt="HaLa Veggie Foodie Logo" style="height: 80px;">
-    <h1>HaLa Veggie Foodie - Morioka Restaurant Search</h1>
-  </header>
+<html>
 
-  <form method="GET" action="/">
+<head>
+  <title>HaLa Veggie Foodie - Iwate Restaurant Search</title>
+  <meta charset="utf-8">
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      background-color: #f8f8f8;
+    }
+
+    h1 {
+      color: #2c3e50;
+    }
+
+    form {
+      margin-bottom: 20px;
+    }
+
+    label {
+      margin-right: 10px;
+    }
+
+    input {
+      margin-right: 20px;
+      padding: 5px;
+    }
+
+    button {
+      padding: 5px 10px;
+    }
+
+    .restaurant {
+      background-color: #fff;
+      border: 1px solid #ccc;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 5px;
+    }
+
+    .restaurant h2 {
+      margin-top: 0;
+      color: #27ae60;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>HaLa Veggie Foodie - Iwate Restaurant Search</h1>
+
+  <form method="get" action="/">
     <label for="genre">Filter by Genre:</label>
-    <input type="text" name="genre" id="genre" placeholder="e.g. Curry">
+    <input type="text" name="genre" id="genre">
 
     <label for="type">Filter by Type:</label>
-    <select name="type" id="type">
-      <option value="">All</option>
-      <option value="Halal">Halal</option>
-      <option value="Vegetarian">Vegetarian</option>
-    </select>
+    <input type="text" name="type" id="type">
+
+    <label for="area">Filter by Area:</label>
+    <input type="text" name="area" id="area">
 
     <button type="submit">Search</button>
   </form>
 
-  <ul>
-    {% for r in restaurants %}
-      <li>{{ r.name }} - {{ r.category }} - {{ r.genre }} - {{ r.halal_or_veg }}</li>
-    {% endfor %}
-  </ul>
+  <hr>
+
+  {% for restaurant in restaurants %}
+  <div class="restaurant">
+    <h2>{{ restaurant.name }}</h2>
+    <p><strong>Area:</strong> {{ restaurant.category }}</p>
+    <p><strong>Genre:</strong> {{ restaurant.genre }}</p>
+    <p><strong>Type:</strong> {{ restaurant.halal_or_veg }}</p>
+  </div>
+  {% endfor %}
 </body>
+
 </html>
