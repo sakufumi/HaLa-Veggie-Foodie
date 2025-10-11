@@ -4,75 +4,78 @@
 <head>
   <title>HaLa Veggie Foodie - Iwate Restaurant Search</title>
   <meta charset="utf-8">
-  <style>
-    body {
-      font-family: sans-serif;
-      padding: 20px;
-      background-color: #f8f8f8;
-    }
-
-    h1 {
-      color: #2c3e50;
-    }
-
-    form {
-      margin-bottom: 20px;
-    }
-
-    label {
-      margin-right: 10px;
-    }
-
-    input {
-      margin-right: 20px;
-      padding: 5px;
-    }
-
-    button {
-      padding: 5px 10px;
-    }
-
-    .restaurant {
-      background-color: #fff;
-      border: 1px solid #ccc;
-      padding: 15px;
-      margin-bottom: 15px;
-      border-radius: 5px;
-    }
-
-    .restaurant h2 {
-      margin-top: 0;
-      color: #27ae60;
-    }
-  </style>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
 </head>
 
 <body>
-  <h1>HaLa Veggie Foodie - Iwate Restaurant Search</h1>
+  <header style="text-align: center; margin-bottom: 20px;">
+    <img src="{{ url_for('static', filename='img/logo.png') }}" alt="HaLa Veggie Foodie Logo" style="height: 80px; margin-bottom: 10px;">
+    <h1 style="color: #88b04b; font-family: 'Quicksand', sans-serif;">HaLa Veggie Foodie</h1>
+    <p style="color: #555; font-size: 16px;">Iwate Restaurant Search</p>
+  </header>
 
-  <form method="get" action="/">
-    <label for="genre">Filter by Genre:</label>
-    <input type="text" name="genre" id="genre">
+  <div class="container">
+    <div class="search-panel">
+      <form method="get" action="/">
+        <label for="genre">🍃 Genre:</label>
+        <input type="text" name="genre" id="genre">
 
-    <label for="type">Filter by Type:</label>
-    <input type="text" name="type" id="type">
+        <label for="type">🥗 Type:</label>
+        <input type="text" name="type" id="type">
 
-    <label for="area">Filter by Area:</label>
-    <input type="text" name="area" id="area">
+        <label for="area">📍 Area:</label>
+        <input type="text" name="area" id="area">
 
-    <button type="submit">Search</button>
-  </form>
+        <button type="submit">Search</button>
+      </form>
 
-  <hr>
+      <hr>
 
-  {% for restaurant in restaurants %}
-  <div class="restaurant">
-    <h2>{{ restaurant.name }}</h2>
-    <p><strong>Area:</strong> {{ restaurant.category }}</p>
-    <p><strong>Genre:</strong> {{ restaurant.genre }}</p>
-    <p><strong>Type:</strong> {{ restaurant.halal_or_veg }}</p>
+      {% for restaurant in restaurants %}
+      <div class="restaurant">
+        <h2>{{ restaurant.name }}</h2>
+        <p><strong>☕ Category:</strong> {{ restaurant.category }}</p>
+        <p><strong>🍃 Genre:</strong> {{ restaurant.genre }}</p>
+        <p><strong>🥗 Type:</strong> {{ restaurant.halal_or_veg }}</p>
+        <p><strong>📍 Area:</strong> {{ restaurant.area }}</p>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="map-panel">
+      <div id="map"></div>
+    </div>
   </div>
-  {% endfor %}
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    const map = L.map('map').setView([39.7036, 141.1527], 10);
+
+    // 英語表記の地図タイル（CartoDB Positron）
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; <a href="https://carto.com/">CARTO</a> & contributors'
+    }).addTo(map);
+
+    // エリアマーカー＋英語ラベル
+    const areas = [
+      { name: "Morioka", coords: [39.7036, 141.1527], description: "Capital city of Iwate" },
+      { name: "Hiraizumi", coords: [38.9833, 141.1167], description: "Historic Buddhist temples" },
+      { name: "Tono", coords: [39.3333, 141.5333], description: "Folklore and rural charm" },
+      { name: "Hachimantai", coords: [40.0000, 140.9500], description: "Mountain hot springs" }
+    ];
+
+    areas.forEach(area => {
+      L.marker(area.coords).addTo(map)
+        .bindTooltip(area.name, { permanent: true, direction: 'right' })
+        .bindPopup(`
+          <b>${area.name}</b><br>
+          ${area.description}<br>
+          <a href="/?area=${area.name}">Explore restaurants in ${area.name}</a>
+        `);
+    });
+  </script>
 </body>
 
 </html>

@@ -1,3 +1,4 @@
+from sunau import Au_read
 from app import app, db, Restaurant
 
 
@@ -11,14 +12,22 @@ def create_db():
                 category="Cafe",
                 genre="Vegetarian・Vegan",
                 halal_or_veg="Vegetarian",
+                area="Morioka"
             ),
             Restaurant(
                 name="Karakoma",
                 category="Vegetarian restaurant",
                 genre="Vegetable",
                 halal_or_veg="Vegetarian",
+                area="Morioka"
             ),
-            Restaurant(name="Chef Indian Curry", category="Indian cu", genre="Curry", halal_or_veg="Halal"),
+            Restaurant(
+                name="Chef Indian Curry", 
+                category="Indian curry", 
+                genre="Curry",
+                halal_or_veg="Halal",
+                area="Morioka"
+            ),        
         ]
 
         db.session.add_all(restaurants)

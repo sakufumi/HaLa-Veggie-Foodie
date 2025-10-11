@@ -1,12 +1,14 @@
+/* 全体のスタイル */
 body {
   font-family: 'Noto Sans JP', sans-serif;
   background-color: #fdf6e3;
   color: #333;
   padding: 20px;
-  max-width: 800px;
+  max-width: 1100px;
   margin: auto;
 }
 
+/* ヘッダー */
 header {
   text-align: center;
   margin-bottom: 30px;
@@ -19,27 +21,59 @@ h1 {
   margin-top: 10px;
 }
 
+/* 横並びレイアウト */
+.container {
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+/* 左側：検索フォームと結果 */
+.search-panel {
+  flex: 1;
+  min-width: 300px;
+}
+
+/* 右側：地図 */
+.map-panel {
+  flex: 1;
+  min-width: 300px;
+}
+
+/* 地図のスタイル */
+#map {
+  height: 500px;
+  width: 100%;
+  margin-top: 10px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+/* 検索フォームのスタイル */
 form {
   background-color: #fff;
   padding: 15px;
   border: 1px solid #ddd;
   border-radius: 8px;
   margin-bottom: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 label {
-  margin-right: 10px;
   font-weight: bold;
-  display: inline-block;
-  margin-bottom: 8px;
+  width: 100%;
 }
 
 input, select, button {
   padding: 8px;
-  margin-right: 10px;
   border-radius: 4px;
   border: 1px solid #ccc;
   font-size: 14px;
+  flex: 1 1 200px;
 }
 
 button {
@@ -54,16 +88,32 @@ button:hover {
   background-color: #e76f51;
 }
 
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
+/* レストラン一覧 */
+.restaurant {
   background-color: #ffffff;
   border: 1px solid #ddd;
-  padding: 12px;
-  margin-bottom: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
   border-radius: 6px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.restaurant h2 {
+  margin-top: 0;
+  color: #27ae60;
+}
+
+/* スマホ対応 */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+
+  form {
+    flex-direction: column;
+  }
+
+  input, select, button {
+    width: 100%;
+  }
 }
