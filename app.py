@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import Float
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///restaurants.db"
@@ -15,6 +16,8 @@ class Restaurant(db.Model):
     genre = db.Column(db.String(100))
     halal_or_veg = db.Column(db.String(100))
     area = db.Column(db.String(100))
+    latitude = db.Column(Float)
+    longtitude = db.Column(Float)
 
 # 🔍 検索ページ（トップ）
 @app.route("/")
