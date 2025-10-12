@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理者ページ</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 2em;
+        }
+        form {
+            margin-top: 1em;
+            padding: 1em;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            max-width: 500px;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.5em;
+        }
+        input {
+            width: 100%;
+            padding: 0.4em;
+            margin-top: 0.2em;
+        }
+        button {
+            margin-top: 1em;
+            padding: 0.6em 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <h1>管理者ページ</h1>
+    <p>レストラン情報を追加できます。</p>
+
+    <form action="/admin/add" method="POST">
+        <label>名前:
+            <input type="text" name="name" required>
+        </label>
+        <label>カテゴリ:
+            <input type="text" name="category">
+        </label>
+        <label>ジャンル:
+            <input type="text" name="genre">
+        </label>
+        <label>ハラール/ヴィーガン:
+            <input type="text" name="halal_or_veg">
+        </label>
+        <label>地域:
+            <input type="text" name="area">
+        </label>
+        <label>緯度:
+            <input type="text" name="latitude">
+        </label>
+        <label>経度:
+            <input type="text" name="longtitude">
+        </label>
+        <button type="submit">追加する</button>
+    </form>
+</body>
+</html>
+
